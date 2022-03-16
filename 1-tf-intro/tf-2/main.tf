@@ -27,4 +27,5 @@ variable "ami" {
 
 variable "name" {
   description = "I like names"
+  
 }
