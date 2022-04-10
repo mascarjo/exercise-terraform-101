@@ -8,7 +8,8 @@ terraform {
 }
 
 provider "aws" {
-  region = "us-east-1"
+  region  = "us-east-1"
+  profile = "default"
 }
 
 variable "name" {
@@ -27,9 +28,4 @@ resource "aws_instance" "web" {
 variable "ami" {
   description = "Amazon Machine Image"
   default = "ami-07eaf2ea4b73a54f6"
-}
-
-variable "name" {
-  description = "I like names"
-  
 }
