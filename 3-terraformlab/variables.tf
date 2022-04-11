@@ -10,28 +10,25 @@ variable "project_tags" {
 
 variable "name" {
   description = "Name of EC2 instance"
-  default     = "johansterraformp1"
+  default     = "johansterraformp2"
 }
 
-variable "active"{
-  type = boolean
-  default = false
-}
-
-variable "instancenum"{
-  default = 1
-  type = Number 
+variable "security_group_use_name_prefix" {
+  type        = bool
+  default     = false
+  description = "Whether to create a default Security Group with unique name beginning with the normalized prefix."
 }
 
 variable "ami" {
   description = "Amazon Machine Image"
   default = "ami-0c02fb55956c7d316"
+  type = string
 }
 
 
 variable "instance_count" {
   default = "1"
-  type        = Number
+  type        = number
 }
 
 variable "user_data_base64" {
@@ -43,12 +40,8 @@ variable "user_data_base64" {
 variable "security_groups" {
   description = "A list of Security Group IDs to associate with EC2 instance."
   type        = list(string)
-  default     = []
+  default     = [""]
 }
 
-variable "security_group_use_name_prefix" {
-  type        = bool
-  default     = false
-  description = "Whether to create a default Security Group with unique name beginning with the normalized prefix."
-}
+
 
