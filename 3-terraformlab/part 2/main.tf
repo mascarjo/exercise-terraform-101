@@ -18,8 +18,8 @@ resource "aws_instance" "web" {
     ami = var.ami
     count = var.instance_count
     key_name = "lab1key"
-    security_groups = var.security_groups[0]
-    security_group_use_name_prefix = var.security_group_use_name_prefix
+    #security_groups = var.security_groups[0]
+    #security_group_use_name_prefix = var.security_group_use_name_prefix
     user_data_base64 = var.user_data_base64
   }
 
@@ -34,7 +34,7 @@ connection {
 
 provisioner "file" {
 
-    source      = "C:/Users/johan/Downloads/ansible-playbook.yaml"
+    source      = "./ansible-playbook.yaml"
     destination = "/tmp/ansible-playbook.yaml"
   
 } 
