@@ -9,12 +9,6 @@ terraform {
 
 provider "aws" {
   region  = "us-east-1"
-  profile = "default"
-}
-
-variable "name" {
-  description = "Name of EC2 instance"
-  default     = "myinstance"
 }
 
 resource "aws_instance" "web" {
@@ -25,7 +19,12 @@ resource "aws_instance" "web" {
   }
 }
 
-variable "ami" {
-  description = "Amazon Machine Image"
-  default = "ami-07eaf2ea4b73a54f6"
-}
+# ami
+# name
+#
+#
+#
+#
+#
+#
+#
