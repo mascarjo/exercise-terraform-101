@@ -1,44 +1,49 @@
 terraform {
   required_providers {
     aws = {
-      source  = "hashicorp/aws"
-      version = "~> 3.0"
+      source = "hashicorp/aws"
+      version = "4.5.0"
     }
   }
 }
 provider "aws" {
-  region = "us-west-2"
+  region = "us-east-1"
   profile = "default"
 }
-resource "aws_instance" "hari-first-ec2" {
-  ami           = "ami-03d5c68bab01f3496"
+resource "aws_instance" "web" {
+  ami           = var.ami
   instance_type = "t2.micro"
-  key_name = "harish_pwc"
-
-    tags = {
-    Name = "Harish"
+  tags = {
+    Name = var.project_tags["Name"]
+    ami = var.ami
+    count = var.instance_count
+    key_name = "lab1key"
+    security_groups = var.security_groups[0]
+    security_group_use_name_prefix = var.security_group_use_name_prefix
+    user_data_base64 = var.user_data_base64
   }
+
+
 connection {
 	
       type     = "ssh"
-      user     = "ubuntu"
-      private_key = file("harish_pwc.pem")
+      user     = "ec2-user"
+      private_key = file("./lab1key.pem")
       host = self.public_ip
 }
 
 provisioner "file" {
 
-    source      = "C:\Users\Dilip\Desktop\Training\Ansible Playbook.yaml"
-    destination = "/tmp/"
+    source      = "C:/Users/johan/Downloads/ansible-playbook.yaml"
+    destination = "/tmp/ansible-playbook.yaml"
   
 } 
 
- provisioner "remote-exec" {
+provisioner "remote-exec" {
 
     inline = [
-                 "sudo apt update",
-                  "sudo apt install ansible",
-	          "sudo systemctl start ansible",
+                 "sudo amazon-linux-extras enable ansible2",
+                 "sudo yum install -y ansible"
  
              ] 
 }
@@ -47,8 +52,7 @@ provisioner "remote-exec" {
 
     inline = [
 
-                  "ansible all -a "df -h" -u root",
+                  "ansible all -a \"df -h\" -u root",
              ] 
 }
-
 }
