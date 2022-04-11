@@ -8,9 +8,7 @@ terraform {
 }
 provider "aws" {
   region = "us-west-2"
-
-  access_key = "my-access-key"
-  secret_key = "my-secret-key"
+  profile = "default"
 }
 resource "aws_instance" "hari-first-ec2" {
   ami           = "ami-03d5c68bab01f3496"
