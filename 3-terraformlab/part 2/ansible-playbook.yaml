@@ -2,6 +2,7 @@
 - name: This sets up an httpd webserver
   hosts: localhost
   connection: local
+  become: yes
   tasks:
   - name: Install apache packages 
     yum:
@@ -11,12 +12,10 @@
     service:
       name: httpd 
       state: started
-  - name: Open port 80 for http access
-    firewalld:
-      service: http
-      permanent: true
-      state: enabled
-  - name: Restart the firewalld service to load in the firewall changes
-    service: 
-      name: firewalld 
-      state: restarted
+  - name: collect facts about system services
+    service_facts:
+    register: services_state
+
+  - name: Debug
+    debug:
+      var: services_state

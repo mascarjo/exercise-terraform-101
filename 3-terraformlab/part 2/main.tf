@@ -10,17 +10,36 @@ provider "aws" {
   region = "us-east-1"
   profile = "default"
 }
+
+resource "aws_security_group" "ssh" {
+  name        = "public ssh"
+  description = "Security Group Deployment"
+  tags        = merge(var.project_tags)
+
+  ingress {
+    from_port   = 22
+    to_port     = 22
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+  
+  egress {
+    from_port   = 0
+    to_port     = 0
+    protocol    = "-1"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+}
+
 resource "aws_instance" "web" {
   ami           = var.ami
   instance_type = "t2.micro"
+  count = var.instance_count
+  key_name = "johanspart2"
+  vpc_security_group_ids = [aws_security_group.ssh.id]
+  user_data_base64 = var.user_data_base64
   tags = {
     Name = var.project_tags["Name"]
-    ami = var.ami
-    count = var.instance_count
-    key_name = "lab1key"
-    #security_groups = var.security_groups[0]
-    #security_group_use_name_prefix = var.security_group_use_name_prefix
-    user_data_base64 = var.user_data_base64
   }
 
 
@@ -28,22 +47,38 @@ connection {
 	
       type     = "ssh"
       user     = "ec2-user"
-      private_key = file("./lab1key.pem")
+      private_key = file(var.key)
       host = self.public_ip
 }
 
 provisioner "file" {
 
-    source      = "./ansible-playbook.yaml"
+    source      = "ansible-playbook.yaml"
     destination = "/tmp/ansible-playbook.yaml"
   
 } 
+
+provisioner "file" {
+
+    source      = "ansible-getfacts.yaml"
+    destination = "/tmp/ansible-getfacts.yaml"
+  
+}
+
+provisioner "file" {
+
+    source      = "./inventory/hosts.yaml"
+    destination = "/tmp/inventory/hosts.yaml"
+  
+}
 
 provisioner "remote-exec" {
 
     inline = [
                  "sudo amazon-linux-extras enable ansible2",
-                 "sudo yum install -y ansible"
+                 "sudo yum install -y ansible",
+                 "ansible-playbook /tmp/ansible-playbook.yaml -i /temp/inventory/hosts",
+                 "ansible-playbook /tmp/ansible-getfacts.yaml -i /tmp/inventory/hosts"
  
              ] 
 }

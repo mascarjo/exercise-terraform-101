@@ -43,5 +43,9 @@ variable "security_groups" {
   default     = [""]
 }
 
-
+variable "key" {
+  type        = string
+  description = "Key for ssh"
+  default     = "johanspart2.pem"
+}
 
