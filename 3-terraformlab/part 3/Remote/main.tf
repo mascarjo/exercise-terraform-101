@@ -12,10 +12,10 @@ provider "aws" {
 }
 
 module "tf-stack" {
-  source = "github.com:<yourrepo>/terraform-lab-03-simplestack.git"
+  source = "github.com:mascarjo/terraform-lab-03-simplestack.git"
   project_tags =  {
-    Name       = "terraform-stackdemo"
-    Owner      = "Sebastian Maniak"
+    Name       = "terraform-makevpc"
+    Owner      = "Johans Mascardo"
     Purpose    = "Testing"
     CostCenter = "0001"
   }
