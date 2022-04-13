@@ -12,7 +12,7 @@ provider "aws" {
 }
 
 resource "aws_security_group" "ssh" {
-  name        = "public ssh"
+  name        = "public ssh part 3"
   description = "Security Group Deployment"
   tags        = merge(var.project_tags)
 
@@ -78,7 +78,6 @@ provisioner "remote-exec" {
                  "sudo yum install httpd -y",
                  "sudo systemctl restart httpd",
                  "sudo systemctl enable httpd"
- 
              ] 
 }
 }

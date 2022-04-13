@@ -1,0 +1,9 @@
+- name:  Display information
+  hosts: localhost
+  connection: local
+  gather_facts: yes
+
+  tasks:
+    - name: Display Operating System Type & Version
+      debug:
+        msg: "The OS is: {{ansible_distribution}}"
