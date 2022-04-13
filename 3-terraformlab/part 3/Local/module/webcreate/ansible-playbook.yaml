@@ -1,0 +1,21 @@
+---
+- name: This sets up an httpd webserver
+  hosts: localhost
+  connection: local
+  become: yes
+  tasks:
+  - name: Install apache packages 
+    yum:
+      name: httpd
+      state: present
+  - name: ensure httpd is running
+    service:
+      name: httpd 
+      state: started
+  - name: collect facts about system services
+    service_facts:
+    register: services_state
+
+  - name: Debug
+    debug:
+      var: services_state
